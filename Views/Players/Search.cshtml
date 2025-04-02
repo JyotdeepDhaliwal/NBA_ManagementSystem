@@ -1,0 +1,78 @@
+﻿@model List<NBA_ManagementSystem.Models.Player>
+
+@{
+    ViewBag.Title = "Players Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Search NBA Players</h2>
+
+<input type="text" id="searchBox" class="form-control" placeholder="Search by name..." autocomplete="off" />
+<div id="autocomplete-results" class="list-group"></div>
+
+<hr />
+<div id="playerResults">
+    @Html.Partial("_PlayerList", Model)
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const searchBox = $("#searchBox");
+
+        // Loads and performs previous search
+        const lastSearch = localStorage.getItem("lastSearch");
+        if (lastSearch) {
+            searchBox.val(lastSearch);
+            triggerSearch(); //It will search immediately after setting the value
+        }
+
+        // For AutoCompleting input
+        searchBox.on("input", function () {
+            const query = $(this).val();
+            localStorage.setItem("lastSearch", query);
+
+            if (!query) {
+                $("#autocomplete-results").empty();
+                return;
+            }
+
+            $.ajax({
+                url: '/Players/SearchSuggestions',
+                type: 'GET',
+                data: { query: query },
+                success: function (data) {
+                    let list = "";
+                    data.forEach(function (item) {
+                        list += `<a href="#" class="list-group-item list-group-item-action suggestion">${item}</a>`;
+                    });
+                    $("#autocomplete-results").html(list);
+                }
+            });
+        });
+
+        // This is for the suggestions clicked
+        $(document).on("click", ".suggestion", function (e) {
+            e.preventDefault();
+            const selected = $(this).text();
+            searchBox.val(selected);
+            triggerSearch();
+        });
+
+        // For the trigger AJAX search
+        function triggerSearch() {
+            const query = searchBox.val();
+            $.ajax({
+                url: '/Players/Filter',
+                type: 'GET',
+                data: { query: query },
+                success: function (result) {
+                    $("#playerResults").html(result);
+                },
+                error: function () {
+                    alert("Error performing search.");
+                }
+            });
+        }
+    });
+</script>

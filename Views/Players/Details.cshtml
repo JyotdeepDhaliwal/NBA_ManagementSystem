@@ -1,0 +1,38 @@
+﻿@model NBA_ManagementSystem.Models.Player
+
+@{
+    ViewBag.Title = "Player Details";
+}
+
+<h2>Player Details</h2>
+
+<table class="table">
+    <tr>
+        <th>Jersey Number</th>
+        <td>@Model.JerseyNumber</td>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td>@Model.Name</td>
+    </tr>
+    <tr>
+        <th>Position</th>
+        <td>@Model.Position</td>
+    </tr>
+    <tr>
+        <th>Height</th>
+        <td>@Model.Height</td>
+    </tr>
+    <tr>
+        <th>Date of Birth</th>
+        <td>@Model.DateOfBirth.ToShortDateString()</td>
+    </tr>
+    <tr>
+        <th>Team</th>
+        <td>@Html.ActionLink(Model.Team.Name, "Details", "Teams", new { id = Model.TeamId }, null)</td>
+    </tr>
+</table>
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

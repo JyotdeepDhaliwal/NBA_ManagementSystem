@@ -1,0 +1,29 @@
+﻿@model IEnumerable<NBA_ManagementSystem.Models.Trade>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Trade History</h2>
+
+<table class="table">
+    <tr>
+        <th>Trade Name</th>
+        <th>From Team</th>
+        <th>To Team</th>
+        <th>Contracts</th>
+        <th>Trade Date</th>
+    </tr>
+
+    @foreach (var trade in Model)
+    {
+        <tr>
+            <td>@trade.Name</td>
+            <td>@Html.ActionLink(trade.TeamFrom?.Name ?? "Unknown", "Details", "Teams", new { id = trade.TeamFromId }, null)</td>
+            <td>@Html.ActionLink(trade.TeamTo?.Name ?? "Unknown", "Details", "Teams", new { id = trade.TeamToId }, null)</td>
+            <td>@trade.Contracts</td>
+            <td>@trade.TradeDate.ToShortDateString()</td>
+        </tr>
+    }
+</table>

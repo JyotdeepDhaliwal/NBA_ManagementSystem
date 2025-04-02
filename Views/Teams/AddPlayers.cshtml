@@ -1,0 +1,66 @@
+﻿@model List<NBA_ManagementSystem.Models.UserTeamPlayer>
+
+@{
+    ViewBag.Title = "Add Players";
+}
+
+<h2>Add Players to @ViewBag.TeamName</h2>
+
+@using (Html.BeginForm("AddPlayers", "Teams", FormMethod.Post))
+{
+    <input type="hidden" name="teamId" value="@ViewBag.TeamId" />
+
+    <div class="form-group">
+        <label>Player Name</label>
+        <input type="text" name="playerName" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Position</label>
+        <input type="text" name="position" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Height</label>
+        <input type="text" name="height" class="form-control" />
+    </div>
+
+    if (ViewBag.Error != null)
+    {
+        <p class="text-danger">@ViewBag.Error</p>
+    }
+
+    <button type="submit" class="btn btn-success">Add Player</button>
+}
+
+<hr />
+
+<h4>Current Players</h4>
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Height</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var player in Model)
+        {
+            <tr>
+                <td>@player.PlayerName</td>
+                <td>@player.Position</td>
+                <td>@player.Height</td>
+                <td>
+                    @using (Html.BeginForm("DeletePlayer", "Teams", FormMethod.Post))
+                    {
+                        @Html.Hidden("id", player.Id)
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<p>
+    @Html.ActionLink("Back to My Teams", "MyTeams", null, new { @class = "btn btn-default" })
+</p>

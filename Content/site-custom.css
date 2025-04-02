@@ -1,0 +1,33 @@
+﻿body {
+    background-color: #f0f2f5;
+}
+
+.navbar {
+    background-color: #1e3d59 !important;
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff !important;
+}
+
+    .nav-link:hover {
+        color: #ffd700 !important;
+    }
+
+footer {
+    background-color: #1e3d59;
+    color: #ffffff;
+    padding: 10px 0;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.list-group-item {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+    .list-group-item:hover {
+        background-color: #1e3d59;
+        color: #fff;
+    }

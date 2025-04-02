@@ -1,0 +1,48 @@
+﻿@model IEnumerable<NBA_ManagementSystem.Models.UserTeam>
+
+@{
+    ViewBag.Title = "My Custom Teams";
+}
+
+<h2>My Custom Teams</h2>
+
+@foreach (var team in Model)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>@team.TeamName</strong>
+            <span class="pull-right">
+                @Html.ActionLink("Edit", "EditTeam", "Teams", new { id = team.Id }, new { @class = "btn btn-sm btn-info" })
+
+                @using (Html.BeginForm("DeleteTeam", "Teams", FormMethod.Post, new { style = "display:inline;" }))
+                {
+                    @Html.Hidden("id", team.Id)
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this team and its players?')">
+                        Remove
+                    </button>
+                }
+            </span>
+        </div>
+        <div class="panel-body">
+            @if (team.Players != null && team.Players.Any())
+            {
+                <ul>
+                    @foreach (var player in team.Players)
+                    {
+                        <li>
+                            @player.PlayerName (@player.Position, @player.Height)
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No players added yet.</p>
+            }
+        </div>
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Click Me To Make Team Name", "CreateOwnTeam", null, new { @class = "btn btn-default" })
+</p>

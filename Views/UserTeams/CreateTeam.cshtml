@@ -1,0 +1,22 @@
+﻿@model NBA_ManagementSystem.Models.UserTeam
+
+@{
+    ViewBag.Title = "CreateTeam";
+}
+
+<h2>Create Your Team</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TeamName)
+        @Html.TextBoxFor(model => model.TeamName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.TeamName)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Team</button>
+}
+
+
