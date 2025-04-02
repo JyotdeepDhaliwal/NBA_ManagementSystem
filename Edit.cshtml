@@ -1,0 +1,43 @@
+﻿@model Team
+
+<h2>Edit Team</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.Id)
+
+    <div>
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name)
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.City)
+        @Html.TextBoxFor(m => m.City)
+        @Html.ValidationMessageFor(m => m.City)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.HeadCoach)
+        @Html.TextBoxFor(m => m.HeadCoach)
+        @Html.ValidationMessageFor(m => m.HeadCoach)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.GamesWon)
+        @Html.TextBoxFor(m => m.GamesWon, new { type = "number" })
+        @Html.ValidationMessageFor(m => m.GamesWon)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.GamesLost)
+        @Html.TextBoxFor(m => m.GamesLost, new { type = "number" })
+        @Html.ValidationMessageFor(m => m.GamesLost)
+    </div>
+
+    <button type="submit">Save</button>
+}
+
+<a href="@Url.Action("Index")">Back to List</a>
+
