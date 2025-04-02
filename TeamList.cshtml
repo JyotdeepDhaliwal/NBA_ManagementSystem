@@ -1,0 +1,10 @@
+@model List<Team>
+
+<div class="row">
+    @foreach (var team in Model)
+    {
+        <div class="col-md-4">
+            @await Html.PartialAsync("_TeamCard", team)
+        </div>
+    }
+</div>
