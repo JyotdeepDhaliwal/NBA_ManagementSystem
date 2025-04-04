@@ -1,74 +1,134 @@
-﻿@{
+@{
     ViewBag.Title = "Home";
 }
 
-<h2 class="text-primary">Welcome to the NBA Management System</h2>
-
-<p class="lead">Your one stop place for Team & Player Management.</p>
-
+<!-- Header Section -->
+<div class="container text-center mt-5">
+    <h2 class="text-primary">Welcome to the NBA Management System</h2>
+    <p class="lead">Your one stop place for Team & Player Management.</p>
+</div>
 
 <div class="row">
+    <!-- Left Column for News and Upcoming Matches -->
     <div class="col-md-8">
         <h3>Latest NBA News</h3>
-        <ul class="list-group">
-            <li class="list-group-item">LeBron James announces retirement after 21 seasons!</li>
-            <li class="list-group-item">Golden State Warriors secure their playoff spot with a clutch win!</li>
-            <li class="list-group-item">Trade rumors: Damian Lillard to join the Miami Heat?</li>
-            <li class="list-group-item">NBA suspends Draymond Green for 3 games after altercation.</li>
-            <li class="list-group-item">Victor Wembanyama wins Rookie of the Year award!</li>
+        <ul class="list-group" id="nbaNewsList">
+            <!-- Dynamic content will be loaded here from the API -->
         </ul>
 
         <hr>
 
         <h3>Upcoming Matches</h3>
-        <ul class="list-group">
-            <li class="list-group-item">Lakers vs. Warriors - March 10, 2024</li>
-            <li class="list-group-item">Celtics vs. Heat - March 12, 2024</li>
-            <li class="list-group-item">Bucks vs. Nets - March 14, 2024</li>
-            <li class="list-group-item">Suns vs. Mavericks - March 15, 2024</li>
-            <li class="list-group-item">76ers vs. Nuggets - March 16, 2024</li>
+        <ul class="list-group" id="nbaUpcomingMatches">
+            <!-- Dynamic content will be loaded here from the API -->
         </ul>
     </div>
 
+    <!-- Right Column for Team Standings and MVP -->
     <div class="col-md-4">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">Team Standings</h3>
             </div>
             <div class="panel-body">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Team</th>
-                        <th>Wins</th>
-                        <th>Losses</th>
-                    </tr>
-                    <tr>
-                        <td>Los Angeles Lakers</td>
-                        <td>38</td>
-                        <td>22</td>
-                    </tr>
-                    <tr>
-                        <td>Golden State Warriors</td>
-                        <td>35</td>
-                        <td>25</td>
-                    </tr>
-                    <tr>
-                        <td>Boston Celtics</td>
-                        <td>41</td>
-                        <td>19</td>
-                    </tr>
-                    <tr>
-                        <td>Miami Heat</td>
-                        <td>32</td>
-                        <td>28</td>
-                    </tr>
-                    <tr>
-                        <td>Denver Nuggets</td>
-                        <td>40</td>
-                        <td>20</td>
-                    </tr>
+                <table class="table table-striped" id="nbaStandings">
+                    <!-- Dynamic content will be loaded here from the API -->
                 </table>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Top MVPs Section -->
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Top MVPs</h3>
+            </div>
+            <div class="panel-body">
+                <ul id="nbaTopMVPs">
+                    <!-- Dynamic content will be loaded here from the API -->
+                </ul>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Footer Section -->
+<footer class="bg-dark text-white text-center py-3 mt-5">
+    <div>
+        <a href="https://www.nba.com/" target="_blank" class="text-white">NBA Official Website</a> |
+        <a href="https://www.espn.com/nba/" target="_blank" class="text-white">ESPN NBA</a> |
+        <a href="https://www.sports.yahoo.com/nba/" target="_blank" class="text-white">Yahoo Sports NBA</a> |
+        <a href="https://www.si.com/nba" target="_blank" class="text-white">Sports Illustrated NBA</a>
+    </div>
+    <div class="mt-2">
+        <p>&copy; 2024 NBA Management System | All Rights Reserved</p>
+    </div>
+</footer>
+
+<script>
+// Fetch NBA Data from the public balldontlie API
+async function fetchNBAData() {
+    // Fetch Team Standings from the balldontlie API (This is a basic example, you can explore other endpoints)
+    const teamsResponse = await fetch('https://www.balldontlie.io/api/v1/teams');
+    const teamsData = await teamsResponse.json();
+    const standingsTable = document.getElementById("nbaStandings");
+
+    // Display Teams
+    teamsData.data.forEach(team => {
+        let row = document.createElement('tr');
+        row.innerHTML = `<td>${team.full_name}</td><td>--</td><td>--</td>`; // No wins/losses data in this API, so we use placeholders
+        standingsTable.appendChild(row);
+    });
+
+    // Fetch Players for Top MVPs
+    const playersResponse = await fetch('https://www.balldontlie.io/api/v1/players');
+    const playersData = await playersResponse.json();
+    const mvpsList = document.getElementById("nbaTopMVPs");
+
+    // Display Top Players (Top MVP candidates)
+    playersData.data.slice(0, 5).forEach(player => {
+        let listItem = document.createElement('li');
+        listItem.textContent = `${player.first_name} ${player.last_name} - ${player.team.full_name}`;
+        mvpsList.appendChild(listItem);
+    });
+
+    // Fetch News (using a mock example here, you can search for an API that provides news)
+    const newsList = document.getElementById("nbaNewsList");
+    const newsExample = [
+        "LeBron James announces retirement after 21 seasons!",
+        "Golden State Warriors secure their playoff spot with a clutch win!",
+        "Trade rumors: Damian Lillard to join the Miami Heat?",
+        "NBA suspends Draymond Green for 3 games after altercation.",
+        "Victor Wembanyama wins Rookie of the Year award!"
+    ];
+
+    newsExample.forEach(news => {
+        let listItem = document.createElement('li');
+        listItem.classList.add('list-group-item');
+        listItem.textContent = news;
+        newsList.appendChild(listItem);
+    });
+
+    // For Upcoming Matches, you'll need a specific API or data source
+    // For simplicity, I'm adding placeholder data
+    const matchesList = document.getElementById("nbaUpcomingMatches");
+    const upcomingMatches = [
+        "Lakers vs. Warriors - March 10, 2024",
+        "Celtics vs. Heat - March 12, 2024",
+        "Bucks vs. Nets - March 14, 2024",
+        "Suns vs. Mavericks - March 15, 2024",
+        "76ers vs. Nuggets - March 16, 2024"
+    ];
+
+    upcomingMatches.forEach(match => {
+        let listItem = document.createElement('li');
+        listItem.classList.add('list-group-item');
+        listItem.textContent = match;
+        matchesList.appendChild(listItem);
+    });
+}
+
+// Run fetch function on page load
+document.addEventListener("DOMContentLoaded", fetchNBAData);
+</script>
