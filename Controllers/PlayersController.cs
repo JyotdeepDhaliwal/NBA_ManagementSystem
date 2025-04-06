@@ -113,6 +113,7 @@ namespace NBA_ManagementSystem.Controllers
             return View(all);
         }
 
+        
         // This is called by AJAX to return filtered results
         [HttpGet]
         public ActionResult Filter(string query)

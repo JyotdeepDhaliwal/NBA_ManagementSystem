@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using NBA_ManagementSystem.Models;
 
 namespace NBA_ManagementSystem.Controllers
@@ -26,18 +28,82 @@ namespace NBA_ManagementSystem.Controllers
             if (team == null) return HttpNotFound();
             return View(team);
         }
+
+
         public ActionResult Create()
         {
             return View();
         }
-        public ActionResult Edit()
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,Name,City,Telephone,Owner,HeadCoach,GamesWon,GamesLost")] Team team)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                db.Teams.Add(team);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(team);
         }
-        public ActionResult Delete()
+
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Team team = db.Teams.Find(id);
+            if (team == null)
+                return HttpNotFound();
+
+            return View(team);
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,Name,City,Telephone,Owner,HeadCoach,GamesWon,GamesLost")] Team team)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(team).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(team);
+        }
+
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Team team = db.Teams.Find(id);
+            if (team == null)
+                return HttpNotFound();
+
+            return View(team);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Team team = db.Teams.Find(id);
+            db.Teams.Remove(team);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+
+
+
+
+
+
+        // This below is for the teams and players users can make.
 
         // GET FOR Edit a custom team which adds more players
         public ActionResult EditTeam(int id)

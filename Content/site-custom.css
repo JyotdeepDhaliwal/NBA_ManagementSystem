@@ -1,4 +1,20 @@
-﻿body {
+﻿html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+
+body {
     background-color: #f0f2f5;
 }
 
@@ -19,8 +35,8 @@ footer {
     color: #ffffff;
     padding: 10px 0;
     text-align: center;
-    margin-top: 20px;
 }
+
 
 .list-group-item {
     background-color: #f8f9fa;
@@ -31,3 +47,9 @@ footer {
         background-color: #1e3d59;
         color: #fff;
     }
+
+#search-history, #autocomplete-results {
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 9999;
+}

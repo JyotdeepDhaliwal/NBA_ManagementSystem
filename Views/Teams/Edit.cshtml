@@ -1,14 +1,55 @@
 ﻿@model NBA_ManagementSystem.Models.Team
-
-
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Team";
 }
+<h2>Edit Team</h2>
 
-<h2>Edit</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
 
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-<p>The edit form is under construction. Please check back later for updates.</p>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.City)
+            @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Telephone)
+            @Html.TextBoxFor(m => m.Telephone, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Owner)
+            @Html.TextBoxFor(m => m.Owner, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.HeadCoach)
+            @Html.TextBoxFor(m => m.HeadCoach, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.GamesWon)
+            @Html.TextBoxFor(m => m.GamesWon, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.GamesLost)
+            @Html.TextBoxFor(m => m.GamesLost, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Save Changes" class="btn btn-success" />
+        </div>
+    </div>
+}
+<p>@Html.ActionLink("Back to List", "Index")</p>

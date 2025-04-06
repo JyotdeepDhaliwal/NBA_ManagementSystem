@@ -8,50 +8,78 @@
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/site-custom.css" rel="stylesheet" />
 
+
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("NBA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Teams", "Index", "Teams")</li>
-                    <li>@Html.ActionLink("Players", "Index", "Players")</li>
-                    <li>@Html.ActionLink("Trades", "Index", "Trades")</li>
-                    <li>@Html.ActionLink("Register", "Register", "Account")</li>
-                    <li>@Html.ActionLink("Login", "Login", "Account")</li>
-                    <li>@Html.ActionLink("Search Players", "Search", "Players")</li>
+    <div class="wrapper d-flex flex-column min-vh-100">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+            <div class="container">
+                @Html.ActionLink("NBA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Teams", "Index", "Teams")</li>
+                        <li>@Html.ActionLink("Players", "Index", "Players")</li>
+                        <li>@Html.ActionLink("Trades", "Index", "Trades")</li>
+                        <li>@Html.ActionLink("Register", "Register", "Account")</li>
+                        <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                        <li>@Html.ActionLink("Search Players", "Search", "Players")</li>
 
-                </ul>
-                <ul class="navbar-nav">@Html.Partial("_UserInfo")</ul>
+                    </ul>
+                    <ul class="navbar-nav">@Html.Partial("_UserInfo")</ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-3">
-                @Html.Partial("_Sidebar")
+        <main class="container flex-grow-1 mt-4">
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.Partial("_Sidebar")
+                </div>
+                <div class="col-md-9">
+                    @RenderBody()
+                </div>
             </div>
-            <div class="col-md-9">
-                @RenderBody()
+        </main>
+
+        @*<div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-3">
+                        @Html.Partial("_Sidebar")
+                    </div>
+                    <div class="col-md-9">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>*@
+
+        @*<footer class="text-center mt-4">
+                <p>&copy; @DateTime.Now.Year - NBA Management</p>
+            </footer>*@
+
+        <!-- Footer Section -->
+        <footer class="bg-dark text-white text-center py-3">
+            <div>
+                <a href="https://www.nba.com/" target="_blank" class="text-white">NBA Official Website</a> |
+                <a href="https://www.espn.com/nba/" target="_blank" class="text-white">ESPN NBA</a> |
+                <a href="https://www.sports.yahoo.com/nba/" target="_blank" class="text-white">Yahoo Sports NBA</a> |
+                <a href="https://www.si.com/nba" target="_blank" class="text-white">Sports Illustrated NBA</a>
             </div>
-        </div>
+            <div class="mt-2">
+                <p>&copy; 2024 NBA Management System | All Rights Reserved</p>
+            </div>
+        </footer>
     </div>
 
-    <footer class="text-center mt-4">
-        <p>&copy; @DateTime.Now.Year - NBA Management</p>
-    </footer>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
 
 </body>
+
 </html>

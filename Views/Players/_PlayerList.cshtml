@@ -1,19 +1,28 @@
 ﻿@model List<NBA_ManagementSystem.Models.Player>
 
-<table class="table table-striped">
-    <tr>
-        <th>Name</th>
-        <th>Position</th>
-        <th>Height</th>
-        <th>Date of Birth</th>
-    </tr>
-    @foreach (var p in Model)
-    {
+@if (Model != null && Model.Any())
+{
+    <table class="table table-striped">
         <tr>
-            <td>@p.Name</td>
-            <td>@p.Position</td>
-            <td>@p.Height</td>
-            <td>@p.DateOfBirth.ToShortDateString()</td>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Height</th>
+            <th>Date of Birth</th>
         </tr>
-    }
-</table>
+        @foreach (var player in Model)
+        {
+            <tr>
+                <td>@player.Name</td>
+                <td>@player.Position</td>
+                <td>@player.Height</td>
+                <td>@player.DateOfBirth.ToShortDateString()</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div class="alert alert-warning text-center">
+        <strong>Sorry Can't Find Player!</strong>
+    </div>
+}

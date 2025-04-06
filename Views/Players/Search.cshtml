@@ -5,74 +5,149 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Search NBA Players</h2>
+<div class="container mt-4">
+    <h2>Search NBA Players</h2>
 
-<input type="text" id="searchBox" class="form-control" placeholder="Search by name..." autocomplete="off" />
-<div id="autocomplete-results" class="list-group"></div>
+    <div class="position-relative mb-3">
+        <div class="input-group">
+            <input type="text" id="searchBox" class="form-control" placeholder="Search by name..." autocomplete="off" />
+            <button id="searchBtn" class="btn btn-primary">Search</button>
+            <button id="clearHistory" class="btn btn-danger">Clear History</button>
+        </div>
+        <div id="autocomplete-results" class="list-group position-absolute w-100 mt-1 z-3 shadow-sm"></div>
+        <div id="search-history" class="list-group position-absolute w-100 mt-1 z-3 shadow-sm"></div>
+    </div>
 
-<hr />
-<div id="playerResults">
-    @Html.Partial("_PlayerList", Model)
+    <div id="playerResults">
+        @Html.Partial("_PlayerList", Model)
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         const searchBox = $("#searchBox");
+        const historyDiv = $("#search-history");
+        const autocompleteDiv = $("#autocomplete-results");
 
-        // Loads and performs previous search
-        const lastSearch = localStorage.getItem("lastSearch");
-        if (lastSearch) {
-            searchBox.val(lastSearch);
-            triggerSearch(); //It will search immediately after setting the value
+        function saveToHistory(query) {
+            let history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+            if (!history.includes(query)) {
+                history.unshift(query);
+                if (history.length > 5) history.pop();
+                localStorage.setItem("searchHistory", JSON.stringify(history));
+            }
         }
 
-        // For AutoCompleting input
+        function showHistory() {
+            let history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
+            if (history.length === 0) {
+                historyDiv.hide();
+                return;
+            }
+
+            let html = "";
+            history.forEach(item => {
+                html += `<a href="#" class="list-group-item list-group-item-action history-item">${item}</a>`;
+            });
+            historyDiv.html(html).show();
+        }
+
+        function triggerSearch() {
+            const query = searchBox.val();
+            saveToHistory(query);
+            $.ajax({
+                url: '/Players/Filter',
+                type: 'GET',
+                data: { query },
+                success: function (result) {
+                    $("#playerResults").html(result);
+                },
+                error: function () {
+                    alert("Search error.");
+                }
+            });
+        }
+
+        // Load previous search
+        if (localStorage.getItem("lastSearch")) {
+            searchBox.val(localStorage.getItem("lastSearch"));
+            triggerSearch();
+        }
+
+        // Typing input
         searchBox.on("input", function () {
             const query = $(this).val();
             localStorage.setItem("lastSearch", query);
+            autocompleteDiv.empty().hide();
 
-            if (!query) {
-                $("#autocomplete-results").empty();
-                return;
-            }
+            if (query.trim() === "") return;
 
             $.ajax({
                 url: '/Players/SearchSuggestions',
                 type: 'GET',
                 data: { query: query },
                 success: function (data) {
+                    if (data.length === 0) return;
                     let list = "";
-                    data.forEach(function (item) {
+                    data.forEach(item => {
                         list += `<a href="#" class="list-group-item list-group-item-action suggestion">${item}</a>`;
                     });
-                    $("#autocomplete-results").html(list);
+                    autocompleteDiv.html(list).show();
                 }
             });
         });
 
-        // This is for the suggestions clicked
+        // Click suggestions
         $(document).on("click", ".suggestion", function (e) {
             e.preventDefault();
-            const selected = $(this).text();
-            searchBox.val(selected);
+            const val = $(this).text();
+            searchBox.val(val);
+            autocompleteDiv.hide();
             triggerSearch();
         });
 
-        // For the trigger AJAX search
-        function triggerSearch() {
-            const query = searchBox.val();
-            $.ajax({
-                url: '/Players/Filter',
-                type: 'GET',
-                data: { query: query },
-                success: function (result) {
-                    $("#playerResults").html(result);
-                },
-                error: function () {
-                    alert("Error performing search.");
-                }
-            });
-        }
+        // Click search history
+        searchBox.on("focus", showHistory);
+        $(document).on("click", ".history-item", function (e) {
+            e.preventDefault();
+            const selected = $(this).text();
+            searchBox.val(selected);
+            historyDiv.hide();
+            triggerSearch();
+        });
+
+        // Click outside hides dropdowns
+        $(document).on("click", function (e) {
+            if (!$(e.target).closest("#searchBox, #autocomplete-results, #search-history").length) {
+                historyDiv.hide();
+                autocompleteDiv.hide();
+            }
+        });
+
+        // Search on button click
+        $("#searchBtn").click(function () {
+            triggerSearch();
+            historyDiv.hide();
+            autocompleteDiv.hide();
+        });
+
+        // Enter key triggers search
+        searchBox.on("keypress", function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                triggerSearch();
+                historyDiv.hide();
+                autocompleteDiv.hide();
+            }
+        });
+
+        // Clear search history
+        $("#clearHistory").click(function () {
+            localStorage.removeItem("searchHistory");
+            historyDiv.empty().hide();
+        });
     });
 </script>
+
+
