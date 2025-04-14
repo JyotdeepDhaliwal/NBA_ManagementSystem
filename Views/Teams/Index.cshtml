@@ -1,36 +1,63 @@
 ﻿@model IEnumerable<NBA_ManagementSystem.Models.Team>
 
 @{
+    ViewBag.Title = "Teams";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>NBA Teams</h2>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-
-<table class="table">
-    <tr>
-        <th>Name</th>
-        <th>City</th>
-        <th>Head Coach</th>
-        <th>Games Won</th>
-        <th>Games Lost</th>
-    </tr>
-
-    @foreach (var team in Model)
+<div class="d-flex justify-content-between align-items-center my-4">
+    <h2 class="fw-bold text-primary"><i class="bi bi-people-fill"></i> NBA Teams</h2>
+    @if (Session["Role"]?.ToString() == "Admin")
     {
-        <tr>
-            <td>@Html.ActionLink(team.Name, "Details", "Teams", new { id = team.Id }, null)</td>
-            <td>@team.City</td>
-            <td>@team.HeadCoach</td>
-            <td>@team.GamesWon</td>
-            <td>@team.GamesLost</td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = team.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = team.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = team.Id })
-            </td>
-        </tr>
+        @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-success" })
     }
-</table>
+</div>
+
+<div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Logo</th>
+                <th scope="col">Name</th>
+                <th scope="col">City</th>
+                <th scope="col">Head Coach</th>
+                <th scope="col">Games Won</th>
+                <th scope="col">Games Lost</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var team in Model)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(team.LogoFileName))
+                        {
+                            <img src="~/Images/@team.LogoFileName" width="60" height="60" class="rounded-circle border shadow-sm" alt="Team Logo" />
+                        }
+                        else
+                        {
+                            <span class="text-muted">N/A</span>
+                        }
+                    </td>
+                    <td>
+                        <strong>@Html.ActionLink(team.Name, "Details", "Teams", new { id = team.Id }, null)</strong>
+                    </td>
+                    <td>@team.City</td>
+                    <td>@team.HeadCoach</td>
+                    <td class="text-success fw-semibold">@team.GamesWon</td>
+                    <td class="text-danger fw-semibold">@team.GamesLost</td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = team.Id }, new { @class = "btn btn-outline-primary btn-sm me-1" })
+
+                        @if (Session["Role"]?.ToString() == "Admin")
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = team.Id }, new { @class = "btn btn-outline-warning btn-sm me-1" })
+                            @Html.ActionLink("Delete", "Delete", new { id = team.Id }, new { @class = "btn btn-outline-danger btn-sm" })
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -223,8 +223,10 @@
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Views\Players\Search.cshtml" />
     <Content Include="Views\Players\_PlayerList.cshtml" />
+    <Content Include="Views\Shared\AccessDenied.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Images\" />
     <Folder Include="Views\Users\" />
   </ItemGroup>
   <ItemGroup>

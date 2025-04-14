@@ -1,78 +1,105 @@
-﻿
-
-
-@{
+﻿@{
     ViewBag.Title = "Home";
 }
 
-<h2 class="text-primary">Welcome to the NBA Management System</h2>
+<!-- Hero Banner -->
+<div class="bg-dark text-white text-center py-5 mb-4" style="background: url('https://cdn.nba.com/manage/2022/08/GettyImages-1393743206.jpg') center/cover no-repeat;">
+    <div class="bg-dark bg-opacity-50 p-5 rounded">
+        <h1 class="display-4 fw-bold">Welcome to NBA Central</h1>
+        <p class="lead">Everything NBA: Teams, Players, Trades, History & More</p>
+    </div>
+</div>
 
-<p class="lead">Your one stop place for Team & Player Management.</p>
+<div class="container">
 
+    <div class="row mb-4">
+        <!-- News Section -->
+        <div class="col-md-8">
+            <h3><i class="bi bi-newspaper"></i> Latest NBA News</h3>
+            <ul class="list-group shadow">
+                <li class="list-group-item">LeBron James announces retirement after 21 seasons!</li>
+                <li class="list-group-item">Golden State Warriors secure their playoff spot with a clutch win!</li>
+                <li class="list-group-item">Trade rumors: Damian Lillard to join the Miami Heat?</li>
+                <li class="list-group-item">NBA suspends Draymond Green for 3 games after altercation.</li>
+                <li class="list-group-item">Victor Wembanyama wins Rookie of the Year award!</li>
+            </ul>
 
-<div class="row">
-    <div class="col-md-8">
-        <h3>Latest NBA News</h3>
-        <ul class="list-group">
-            <li class="list-group-item">LeBron James announces retirement after 21 seasons!</li>
-            <li class="list-group-item">Golden State Warriors secure their playoff spot with a clutch win!</li>
-            <li class="list-group-item">Trade rumors: Damian Lillard to join the Miami Heat?</li>
-            <li class="list-group-item">NBA suspends Draymond Green for 3 games after altercation.</li>
-            <li class="list-group-item">Victor Wembanyama wins Rookie of the Year award!</li>
-        </ul>
+            <hr class="my-4" />
 
-        <hr>
+            <!-- Matches -->
+            <h3><i class="bi bi-calendar-event"></i> Upcoming Matches</h3>
+            <ul class="list-group shadow">
+                <li class="list-group-item">Lakers vs. Warriors - April 19, 2025</li>
+                <li class="list-group-item">Celtics vs. Heat - April 19, 2025</li>
+                <li class="list-group-item">Bucks vs. Nets - April 20, 2025</li>
+                <li class="list-group-item">Suns vs. Mavericks - April 20, 2025</li>
+                <li class="list-group-item">76ers vs. Nuggets - April 21, 2025</li>
+            </ul>
+        </div>
 
-        <h3>Upcoming Matches</h3>
-        <ul class="list-group">
-            <li class="list-group-item">Lakers vs. Warriors - March 10, 2024</li>
-            <li class="list-group-item">Celtics vs. Heat - March 12, 2024</li>
-            <li class="list-group-item">Bucks vs. Nets - March 14, 2024</li>
-            <li class="list-group-item">Suns vs. Mavericks - March 15, 2024</li>
-            <li class="list-group-item">76ers vs. Nuggets - March 16, 2024</li>
+        <!-- Team Standings -->
+        <div class="col-md-4">
+            <div class="card border-primary shadow-sm mb-4">
+                <div class="card-header bg-primary text-white"><i class="bi bi-trophy-fill"></i> Team Standings</div>
+                <div class="card-body p-0">
+                    <table class="table table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th>Team</th>
+                                <th>W</th>
+                                <th>L</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Boston Celtics</td><td>48</td><td>18</td></tr>
+                            <tr><td>Denver Nuggets</td><td>46</td><td>20</td></tr>
+                            <tr><td>Milwaukee Bucks</td><td>45</td><td>22</td></tr>
+                            <tr><td>Phoenix Suns</td><td>43</td><td>24</td></tr>
+                            <tr><td>Golden State Warriors</td><td>42</td><td>25</td></tr>
+                            <tr><td>Miami Heat</td><td>41</td><td>27</td></tr>
+                            <tr><td>Los Angeles Lakers</td><td>39</td><td>28</td></tr>
+                            <tr><td>Philadelphia 76ers</td><td>38</td><td>30</td></tr>
+                            <tr><td>Dallas Mavericks</td><td>37</td><td>31</td></tr>
+                            <tr><td>New York Knicks</td><td>35</td><td>32</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Fun Fact -->
+    <div class="alert alert-success border-start border-5 border-dark shadow-sm" role="alert">
+        <h5><i class="bi bi-lightbulb"></i> NBA Fun Facts</h5>
+        <ul class="mb-0">
+            <li>The Boston Celtics and Lakers are tied for most championships with 17 each.</li>
+            <li>Wilt Chamberlain scored 100 points in a single NBA game.</li>
+            <li>Stephen Curry hit 402 three-pointers in one season.</li>
+            <li>Michael Jordan won 6 NBA championships with the Bulls.</li>
+            <li>The NBA logo is modeled after Jerry West.</li>
+            <li>Kareem Abdul-Jabbar scored the most points in NBA history — 38,387.</li>
+            <li>The NBA introduced the 3-point line in the 1979–80 season.</li>
+            <li>The 1992 “Dream Team” was the first USA Olympic team to feature active NBA players.</li>
+            <li>The NBA was founded in 1946 as the BAA before merging with the NBL.</li>
         </ul>
     </div>
 
-    <div class="col-md-4">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Team Standings</h3>
+    <!-- Featured Player -->
+    <div class="card mb-5 shadow-lg">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/2544.png" class="img-fluid rounded-start" alt="LeBron James">
             </div>
-            <div class="panel-body">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Team</th>
-                        <th>Wins</th>
-                        <th>Losses</th>
-                    </tr>
-                    <tr>
-                        <td>Los Angeles Lakers</td>
-                        <td>38</td>
-                        <td>22</td>
-                    </tr>
-                    <tr>
-                        <td>Golden State Warriors</td>
-                        <td>35</td>
-                        <td>25</td>
-                    </tr>
-                    <tr>
-                        <td>Boston Celtics</td>
-                        <td>41</td>
-                        <td>19</td>
-                    </tr>
-                    <tr>
-                        <td>Miami Heat</td>
-                        <td>32</td>
-                        <td>28</td>
-                    </tr>
-                    <tr>
-                        <td>Denver Nuggets</td>
-                        <td>40</td>
-                        <td>20</td>
-                    </tr>
-                </table>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h4 class="card-title">🏀 Featured Player: LeBron James</h4>
+                    <p class="card-text">
+                        LeBron James is one of the most decorated players in NBA history. With 4 championships, 4 MVPs, and over 38,000 career points, his impact on the game is legendary.
+                    </p>
+                    <p class="card-text"><small class="text-muted">Last updated: April 2025</small></p>
+                </div>
             </div>
         </div>
     </div>
 </div>
-

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -32,15 +33,40 @@ namespace NBA_ManagementSystem.Controllers
 
         public ActionResult Create()
         {
+            //if (!IsAdmin()) return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,City,Telephone,Owner,HeadCoach,GamesWon,GamesLost")] Team team)
+        public ActionResult Create([Bind(Include = "Id,Name,City,Telephone,Owner,HeadCoach,GamesWon,GamesLost")] Team team, HttpPostedFileBase logoFile)
         {
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
+
             if (ModelState.IsValid)
             {
+                if (logoFile != null && logoFile.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(logoFile.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                    logoFile.SaveAs(path);
+                    team.LogoFileName = fileName;
+                }
+
                 db.Teams.Add(team);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -50,6 +76,13 @@ namespace NBA_ManagementSystem.Controllers
 
         public ActionResult Edit(int? id)
         {
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -60,13 +93,28 @@ namespace NBA_ManagementSystem.Controllers
             return View(team);
         }
 
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,City,Telephone,Owner,HeadCoach,GamesWon,GamesLost")] Team team)
+        public ActionResult Edit([Bind(Include = "Id,Name,City,Telephone,Owner,HeadCoach,GamesWon,GamesLost")] Team team, HttpPostedFileBase logoFile)
         {
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
             if (ModelState.IsValid)
             {
+                if (logoFile != null && logoFile.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(logoFile.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                    logoFile.SaveAs(path);
+                    team.LogoFileName = fileName;
+                }
+
                 db.Entry(team).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -76,6 +124,12 @@ namespace NBA_ManagementSystem.Controllers
 
         public ActionResult Delete(int? id)
         {
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -90,7 +144,24 @@ namespace NBA_ManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
             Team team = db.Teams.Find(id);
+
+            // Delete the logo file from disk (if exists)
+            if (!string.IsNullOrEmpty(team.LogoFileName))
+            {
+                string logoPath = Path.Combine(Server.MapPath("~/Images/"), team.LogoFileName);
+                if (System.IO.File.Exists(logoPath))
+                {
+                    System.IO.File.Delete(logoPath);
+                }
+            }
+
             db.Teams.Remove(team);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -35,5 +35,8 @@ namespace NBA_ManagementSystem.Models
 
         // This gets saved in DB
         public string PasswordHash { get; set; }
+
+        [Required]
+        public string Role { get; set; } = "User";
     }
 }

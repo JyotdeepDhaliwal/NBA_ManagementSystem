@@ -7,35 +7,53 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/site-custom.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
 
 
 </head>
 <body>
     <div class="wrapper d-flex flex-column min-vh-100">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
             <div class="container">
-                @Html.ActionLink("NBA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                @Html.ActionLink("🏀 NBA Managment System", "Index", "Home", null, new { @class = "navbar-brand fw-bold" })
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Teams", "Index", "Teams")</li>
-                        <li>@Html.ActionLink("Players", "Index", "Players")</li>
-                        <li>@Html.ActionLink("Trades", "Index", "Trades")</li>
-                        <li>@Html.ActionLink("Register", "Register", "Account")</li>
-                        <li>@Html.ActionLink("Login", "Login", "Account")</li>
-                        <li>@Html.ActionLink("Search Players", "Search", "Players")</li>
 
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Teams", "Index", "Teams", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Players", "Index", "Players", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Trades", "Index", "Trades", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Search", "Search", "Players", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Create Team", "CreateOwnTeam", "Teams", null, new { @class = "nav-link" })</li>
+
+
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">@Html.ActionLink("Create Player", "Create", "Players", null, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Create Team", "Create", "Teams", null, new { @class = "nav-link" })</li>
+                        }
                     </ul>
-                    <ul class="navbar-nav">@Html.Partial("_UserInfo")</ul>
+
+                    <ul class="navbar-nav">
+                        @Html.Partial("_UserInfo")
+                    </ul>
                 </div>
             </div>
         </nav>
 
+
         <main class="container flex-grow-1 mt-4">
+            @RenderBody()
+        </main>
+
+
+        @*<main class="container flex-grow-1 mt-4">
             <div class="row">
                 <div class="col-md-3">
                     @Html.Partial("_Sidebar")
@@ -44,22 +62,22 @@
                     @RenderBody()
                 </div>
             </div>
-        </main>
+        </main>*@
 
         @*<div class="container mt-4">
-                <div class="row">
-                    <div class="col-md-3">
-                        @Html.Partial("_Sidebar")
-                    </div>
-                    <div class="col-md-9">
-                        @RenderBody()
-                    </div>
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.Partial("_Sidebar")
                 </div>
-            </div>*@
+                <div class="col-md-9">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>*@
 
         @*<footer class="text-center mt-4">
-                <p>&copy; @DateTime.Now.Year - NBA Management</p>
-            </footer>*@
+            <p>&copy; @DateTime.Now.Year - NBA Management</p>
+        </footer>*@
 
         <!-- Footer Section -->
         <footer class="bg-dark text-white text-center py-3">

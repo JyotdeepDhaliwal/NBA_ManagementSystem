@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using NBA_ManagementSystem.Models;
 
 namespace NBA_ManagementSystem.Controllers
@@ -27,15 +28,14 @@ namespace NBA_ManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                // I have it so that it will check for duplicates
                 if (db.Users.Any(u => u.Username == user.Username || u.Email == user.Email))
                 {
                     ModelState.AddModelError("", "Username or Email already taken.");
                     return View(user);
                 }
 
-                //user.PasswordHash = HashPassword(user.PasswordHash);
                 user.PasswordHash = HashPassword(user.Password);
+                user.Role = "User"; // Default role
                 db.Users.Add(user);
 
                 try
@@ -69,12 +69,26 @@ namespace NBA_ManagementSystem.Controllers
         public ActionResult Login(string username, string password)
         {
             var hashedPassword = HashPassword(password);
+
+            // hardcoded Admin
+            if (username == "admin" && password == "admin123!")
+            {
+                Session["UserId"] = -1;
+                Session["Username"] = "Admin";
+                Session["Role"] = "Admin";
+                FormsAuthentication.SetAuthCookie("Admin", false);
+                return RedirectToAction("Index", "Home");
+            }
+
             var user = db.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == hashedPassword);
+            //var user = db.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == password);
 
             if (user != null)
             {
                 Session["UserId"] = user.Id;
                 Session["Username"] = user.Username;
+                Session["Role"] = "User";
+                FormsAuthentication.SetAuthCookie(user.Username, false);
                 return RedirectToAction("CreateOwnTeam", "Teams");
             }
 
@@ -110,5 +124,10 @@ namespace NBA_ManagementSystem.Controllers
                 return Convert.ToBase64String(hash);
             }
         }
+        public ActionResult AccessDenied()
+        {
+            return View("~/Views/Shared/AccessDenied.cshtml");
+        }
+
     }
 }

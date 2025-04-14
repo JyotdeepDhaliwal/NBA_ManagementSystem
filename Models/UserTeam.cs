@@ -20,6 +20,8 @@ namespace NBA_ManagementSystem.Models
         public int UserId { get; set; }
 
         public virtual User User { get; set; }
+       // public string LogoFileName { get; set; }
+
         public virtual ICollection<UserTeamPlayer> Players { get; set; }
     }
 }

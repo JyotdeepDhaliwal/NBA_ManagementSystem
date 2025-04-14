@@ -24,6 +24,8 @@ namespace NBA_ManagementSystem.Models
         public string HeadCoach { get; set; }
         public int GamesWon { get; set; }
         public int GamesLost { get; set; }
+        public string LogoFileName { get; set; }
+
 
         public virtual ICollection<Player> Players { get; set; }
     }

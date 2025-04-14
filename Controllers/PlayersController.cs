@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -31,6 +32,13 @@ namespace NBA_ManagementSystem.Controllers
         // This is the GET for Create 
         public ActionResult Create()
         {
+            //  if (!IsAdmin()) return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
             ViewBag.TeamId = new SelectList(db.Teams, "Id", "Name");
             return View();
         }
@@ -38,10 +46,24 @@ namespace NBA_ManagementSystem.Controllers
         // The POST for Create 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,JerseyNumber,Name,Position,Height,DateOfBirth,TeamId")] Player player)
+        public ActionResult Create([Bind(Include = "Id,JerseyNumber,Name,Position,Height,DateOfBirth,TeamId")] Player player, HttpPostedFileBase photoFile)
         {
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
             if (ModelState.IsValid)
             {
+                if (photoFile != null && photoFile.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(photoFile.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                    photoFile.SaveAs(path);
+                    player.PhotoFileName = fileName;
+                }
+
                 db.Players.Add(player);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -54,6 +76,12 @@ namespace NBA_ManagementSystem.Controllers
         // This is the GET for Edit
         public ActionResult Edit(int? id)
         {
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -68,10 +96,25 @@ namespace NBA_ManagementSystem.Controllers
         // This is the POST for Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,JerseyNumber,Name,Position,Height,DateOfBirth,TeamId")] Player player)
+        public ActionResult Edit([Bind(Include = "Id,JerseyNumber,Name,Position,Height,DateOfBirth,TeamId")] Player player, HttpPostedFileBase photoFile)
         {
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
+
             if (ModelState.IsValid)
             {
+                if (photoFile != null && photoFile.ContentLength > 0)
+                {
+                    string fileName = Path.GetFileName(photoFile.FileName);
+                    string path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                    photoFile.SaveAs(path);
+                    player.PhotoFileName = fileName;
+                }
+
                 db.Entry(player).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -84,6 +127,12 @@ namespace NBA_ManagementSystem.Controllers
         // This is the GET for Delete
         public ActionResult Delete(int? id)
         {
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
@@ -99,6 +148,13 @@ namespace NBA_ManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            //if (Session["Role"]?.ToString() != "Admin")
+            //    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+            if (Session["Role"]?.ToString() != "Admin")
+                return RedirectToAction("AccessDenied", "Account");
+
+
             Player player = db.Players.Find(id);
             db.Players.Remove(player);
             db.SaveChanges();

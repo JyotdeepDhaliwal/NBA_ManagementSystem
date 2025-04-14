@@ -34,7 +34,7 @@ namespace NBA_ManagementSystem.Models
         [ForeignKey("Team")]
         [Required(ErrorMessage = "Team selection is required")]
         public int TeamId { get; set; }
-
+        public string PhotoFileName { get; set; }
         public virtual Team Team { get; set; }
     }
 }

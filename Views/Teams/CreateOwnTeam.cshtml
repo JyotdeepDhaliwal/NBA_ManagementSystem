@@ -2,26 +2,87 @@
     ViewBag.Title = "Create Your Own Team";
 }
 
-<h2>Create Your Own Team</h2>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-group">
-        <label>Team Name</label>
-        <input type="text" name="teamName" class="form-control" required />
-    </div>
-
-    if (ViewBag.Error != null)
-    {
-        <p class="text-danger">@ViewBag.Error</p>
+<style>
+    .team-form-container {
+        max-width: 500px;
+        margin: 60px auto;
+        background-color: #ffffff;
+        padding: 40px 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
 
+        .team-form-container h2 {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #212529;
+        }
 
-    <button type="submit" class="btn btn-primary">Create Team</button>
-    <p>
-        @Html.ActionLink("Don't Need To Make A Team", "MyTeams", null, new { @class = "btn btn-default" })
-    </p>
+    .form-group label {
+        display: block;
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
 
-}
+    .form-control {
+        display: block;
+        width: 80%;
+        margin: 0 auto 20px auto;
+        text-align: center;
+    }
+
+    .btn-primary {
+        display: block;
+        width: 60%;
+        margin: 20px auto 10px auto;
+        padding: 10px;
+        font-weight: bold;
+    }
+
+    .btn-default {
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+        color: #0d6efd;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .btn-default:hover {
+            text-decoration: underline;
+        }
+
+    .text-danger {
+        color: #dc3545;
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="team-form-container">
+    <h2><i class="bi bi-people-fill"></i> Create Your Own Team</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label>Team Name</label>
+            <input type="text" name="teamName" class="form-control" required />
+        </div>
+
+        if (ViewBag.Error != null)
+        {
+            <p class="text-danger">@ViewBag.Error</p>
+        }
+
+        <button type="submit" class="btn btn-primary">Create Team</button>
+
+        <p>
+            @Html.ActionLink("Don't Need To Make A Team", "MyTeams", null, new { @class = "btn btn-default" })
+        </p>
+    }
+</div>

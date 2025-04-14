@@ -4,52 +4,67 @@
 }
 <h2>Edit Team</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Teams", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Id)
 
-    <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-horizontal">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.Name)
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.City)
-            @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.Telephone)
-            @Html.TextBoxFor(m => m.Telephone, new { @class = "form-control" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.Owner)
-            @Html.TextBoxFor(m => m.Owner, new { @class = "form-control" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.HeadCoach)
-            @Html.TextBoxFor(m => m.HeadCoach, new { @class = "form-control" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.GamesWon)
-            @Html.TextBoxFor(m => m.GamesWon, new { @class = "form-control" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.GamesLost)
-            @Html.TextBoxFor(m => m.GamesLost, new { @class = "form-control" })
-        </div>
-
-        <div class="form-group">
-            <input type="submit" value="Save Changes" class="btn btn-success" />
-        </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.City)
+        @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Telephone)
+        @Html.TextBoxFor(m => m.Telephone, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Owner)
+        @Html.TextBoxFor(m => m.Owner, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.HeadCoach)
+        @Html.TextBoxFor(m => m.HeadCoach, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.GamesWon)
+        @Html.TextBoxFor(m => m.GamesWon, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.GamesLost)
+        @Html.TextBoxFor(m => m.GamesLost, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Update Logo")
+        <input type="file" name="logoFile" class="form-control" />
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.LogoFileName))
+    {
+        <div class="form-group">
+            <label>Current Logo:</label><br />
+            <img src="~/Images/@Model.LogoFileName" width="120" />
+        </div>
+    }
+
+
+
+    <div class="form-group">
+        <input type="submit" value="Save Changes" class="btn btn-success" />
+    </div>
+</div>
 }
 <p>@Html.ActionLink("Back to List", "Index")</p>
