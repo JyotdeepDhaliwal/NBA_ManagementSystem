@@ -1,0 +1,36 @@
+﻿@model IEnumerable<NBA_ManagementSystem.Models.Team>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>NBA Teams</h2>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>City</th>
+        <th>Head Coach</th>
+        <th>Games Won</th>
+        <th>Games Lost</th>
+    </tr>
+
+    @foreach (var team in Model)
+    {
+        <tr>
+            <td>@Html.ActionLink(team.Name, "Details", "Teams", new { id = team.Id }, null)</td>
+            <td>@team.City</td>
+            <td>@team.HeadCoach</td>
+            <td>@team.GamesWon</td>
+            <td>@team.GamesLost</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = team.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = team.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = team.Id })
+            </td>
+        </tr>
+    }
+</table>
